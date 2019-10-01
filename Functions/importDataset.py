@@ -1,27 +1,25 @@
 import boto3
-import json
 import os
+import datetime
 
 def lambda_handler(event, context):
     
-    #bucket_name = os.environ['S3BucketName']
-    bucket_name = event['Bucketname']
-    #session = boto3.Session(region_name='us-west-2') 
-    client = boto3.client('forecast')
-    #forecastquery = session.client(service_name='forecastquery')
+    session = boto3.Session(region_name='us-west-2') 
+    forecast = session.client(service_name='forecast') 
 
     # In our dataset, the timeseries valuesa are recorded hourly
     DATASET_FREQUENCY = "H" 
     TIMESTAMP_FORMAT = "yyyy-MM-dd hh:mm:ss"
 
-    project = 'inventory_forecast'
-    datasetName = project+'_ds'
-    datasetGroupName = project+'_dsg'
-    #fileName = os.environ['TrainingDataFile']
+    dt = datetime.datetime.now()
+    project = 'inventory_forecast_' + dt.strftime('%d_%m_%y') 
+    datasetName = project + '_ds'
+    datasetGroupName = project + '_dsg'
+    bucket_name = os.environ['S3BucketName']
     fileName = event['Filename']
-    s3DataPath = "s3://"+bucket_name+"/"+fileName
+    s3DataPath = 's3://' + bucket_name + '/' + fileName
 
-    create_dataset_group_response = client.create_dataset_group(DatasetGroupName=datasetGroupName,
+    create_dataset_group_response = forecast.create_dataset_group(DatasetGroupName=datasetGroupName,
                                                               Domain="CUSTOM",
                                                              )
     datasetGroupArn = create_dataset_group_response['DatasetGroupArn']
@@ -44,7 +42,7 @@ def lambda_handler(event, context):
     ]
     }
 
-    response = client.create_dataset(
+    response = forecast.create_dataset(
                     Domain="CUSTOM",
                     DatasetType='TARGET_TIME_SERIES',
                     DatasetName=datasetName,
@@ -53,15 +51,13 @@ def lambda_handler(event, context):
 
     datasetArn = response['DatasetArn']
 
-    updateDatasetResponse = client.update_dataset_group(DatasetGroupArn=datasetGroupArn, DatasetArns=[datasetArn])
-    print(updateDatasetResponse)
+    updateDatasetResponse = forecast.update_dataset_group(DatasetGroupArn=datasetGroupArn, DatasetArns=[datasetArn])
 
     role_arn = os.environ['ForecastRoleARN']
-    print(role_arn)
 
     # Dataset import job
     datasetImportJobName = 'EP_DSIMPORT_JOB_TARGET'
-    ds_import_job_response=client.create_dataset_import_job(DatasetImportJobName=datasetImportJobName,
+    ds_import_job_response=forecast.create_dataset_import_job(DatasetImportJobName=datasetImportJobName,
                                                           DatasetArn=datasetArn,
                                                           DataSource= {
                                                               "S3Config" : {
@@ -73,9 +69,12 @@ def lambda_handler(event, context):
                                                          )
 
     ds_import_job_arn=ds_import_job_response['DatasetImportJobArn']
-    print("Dataset import job AR: "+ds_import_job_arn)
+    print('Dataset import job ARN: ' + ds_import_job_arn)
 
-    return ds_import_job_arn
+    return {
+        "importJobArn": ds_import_job_arn,
+        "datasetGroupArn": datasetGroupArn
+    }
 
     
 

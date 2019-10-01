@@ -1,0 +1,123 @@
+{
+    "StartAt": "ImportDataSet",
+    "States": {
+      "ImportDataSet": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-import-dataset",
+        "ResultPath": "$.ImportJob",
+        "Next": "wait_for_import"
+      },
+      "wait_for_import": {
+        "Type": "Wait",
+        "Seconds": 20,
+        "Next": "GetImportStatus"
+    },
+      "GetImportStatus": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-import-status",
+        "ResultPath": "$.CheckStatus",
+        "Next": "Loop - Data Import Check"
+    },
+       "Loop - Data Import Check": {
+         "Type": "Choice",
+           "Choices": [
+            {
+              "Not": {
+                "Variable": "$.CheckStatus",
+                "StringEquals": "ACTIVE"
+              },
+              "Next": "wait_for_import"
+            },
+            {
+              "Variable": "$.CheckStatus",
+              "StringEquals": "CREATE_FAILED",
+              "Next": "Fail"
+            }           
+          ],
+          "Default": "TrainPredictor"
+        },
+      "TrainPredictor": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-create-predictor",
+        "ResultPath": "$.PredictorJobArn",
+        "Next": "wait_for_predictor"
+      },
+      "wait_for_predictor": {
+        "Type": "Wait",
+        "Seconds": 20,
+        "Next": "GetPredictorStatus"
+    },
+      "GetPredictorStatus": {
+        "Type": "Task",
+        "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-predictor-status",
+        "ResultPath": "$.CheckStatus",
+        "Next": "Loop - Predictor Check"
+    },
+       "Loop - Predictor Check": {
+         "Type": "Choice",
+           "Choices": [
+            {
+              "Not": {
+                "Variable": "$.CheckStatus",
+                "StringEquals": "ACTIVE"
+              },
+              "Next": "wait_for_predictor"
+            },
+            {
+              "Variable": "$.CheckStatus",
+              "StringEquals": "CREATE_FAILED",
+              "Next": "Fail"
+            }
+          ],
+          "Default": "CreateForecast"
+        },
+        "CreateForecast": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-create-forecast",
+            "ResultPath": "$.ForecastJobArn",
+            "Next": "wait_for_forecast"
+          },
+          "wait_for_forecast": {
+            "Type": "Wait",
+            "Seconds": 20,
+            "Next": "GetForecastStatus"
+        },
+          "GetForecastStatus": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-forecast-status",
+            "ResultPath": "$.CheckStatus",
+            "Next": "Loop - Forecast Check"
+        },
+           "Loop - Forecast Check": {
+             "Type": "Choice",
+               "Choices": [
+                {
+                  "Not": {
+                    "Variable": "$.CheckStatus",
+                    "StringEquals": "ACTIVE"
+                  },
+                  "Next": "wait_for_forecast"
+                },
+                {
+                  "Variable": "$.CheckStatus",
+                  "StringEquals": "CREATE_FAILED",
+                  "Next": "Fail"
+                }
+              ],
+              "Default": "ExportForecast"
+            },
+            "ExportForecast": {
+                "Type": "Task",
+                "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-export-forecast",
+                "ResultPath": "$.ForecastExportArn",
+                "Next": "Succeed"
+              },        
+      "Succeed": {
+        "Type": "Succeed"
+        },
+      "Fail": {
+        "Type": "Fail",
+        "Cause": "$.CheckStatus"
+      }
+    }
+  }

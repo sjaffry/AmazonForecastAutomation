@@ -1,0 +1,20 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "lambda:InvokeFunction"
+            ],
+            "Resource": [
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-import-dataset",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-create-forecast",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-create-predictor",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-import-status",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-export-forecast",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-predictor-status",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-forecast-status"
+            ]
+        }
+    ]
+}

@@ -5,18 +5,15 @@ def lambda_handler(event, context):
 
     session = boto3.Session(region_name='us-west-2') 
     forecast = session.client(service_name='forecast') 
-    forecastquery = session.client(service_name='forecastquery')
 
     project = 'inventory_forecast'
-    predictorName= project+'_AutoML'
+    predictorName= project + '_AutoML'
     forecastHorizon = 24
-    algorithmArn = 'arn:aws:forecast:::algorithm/Prophet'
-    datasetGroupArn = event['DatasetGroupArn']
+    datasetGroupArn = event['ImportJob']['datasetGroupArn']
 
     create_predictor_response=forecast.create_predictor(PredictorName=predictorName, 
-                                                  AlgorithmArn=algorithmArn,
                                                   ForecastHorizon=forecastHorizon,
-                                                  PerformAutoML= False,
+                                                  PerformAutoML= True,
                                                   PerformHPO=False,
                                                   EvaluationParameters= {"NumberOfBacktestWindows": 1, 
                                                                          "BackTestWindowOffset": 24}, 
@@ -40,5 +37,6 @@ def lambda_handler(event, context):
                                                         )
     predictorArn=create_predictor_response['PredictorArn']
     
+    print ('Predictor Arn: ' + predictorArn)
 
-    return 'Predictor Arn: ' + predictorArn
+    return predictorArn

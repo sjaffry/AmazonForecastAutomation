@@ -1,4 +1,4 @@
-# AmazonForecastAutomation
+# Amazon Forecast Automation
 Lambda functions orchestrated by Amazon StepFunctions to automate the data import, training the predictor and generating forecast export from the Amazon Forecast service.
 
 This is the supporting code for my blog on <b> "Building end to end automated inventory forecasting capability with AWS Lake Formation and Amazon Forecast" </b>.
