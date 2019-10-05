@@ -8,7 +8,7 @@ def lambda_handler(event, context):
     forecast = session.client(service_name='forecast') 
 
     dt = datetime.datetime.now()
-    dateTime = dt.strftime('%Y/%m/%d')
+    dateTime = dt.strftime('year=%Y/month=%m/day=%d')
     project = 'inventory_forecast'
     forecastName = project + '_AutoML_forecast_' + dt.strftime('%d_%m_%y')
     forecastArn = event['ForecastJobArn']

@@ -12,7 +12,8 @@
                 "glue:CreatePartition",
                 "glue:GetJob",
                 "glue:StartTrigger",
-                "glue:CreateCrawler"
+                "glue:CreateCrawler",
+                "glue:GetJobRun"
             ],
             "Resource": "*",
             "Effect": "Allow",

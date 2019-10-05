@@ -16,8 +16,9 @@ def lambda_handler(event, context):
     datasetName = project + '_ds'
     datasetGroupName = project + '_dsg'
     bucket_name = os.environ['S3BucketName']
-    fileName = event['Filename']
-    s3DataPath = 's3://' + bucket_name + '/' + fileName
+    orders_file = os.environ['Orders']
+    products_file = os.environ['Products']
+    s3DataPath = 's3://' + bucket_name + '/' + orders_file
 
     create_dataset_group_response = forecast.create_dataset_group(DatasetGroupName=datasetGroupName,
                                                               Domain="CUSTOM",

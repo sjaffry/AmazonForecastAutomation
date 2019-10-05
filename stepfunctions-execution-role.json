@@ -13,8 +13,14 @@
                 "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-import-status",
                 "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-export-forecast",
                 "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-predictor-status",
-                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-forecast-status"
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-forecast-status",
+                "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-gluejob-status"
             ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": "glue:StartJobRun",
+            "Resource": "*"
         }
     ]
 }
