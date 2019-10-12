@@ -8,7 +8,7 @@ def lambda_handler(event, context):
 
     project = 'inventory_forecast'
     predictorName= project + '_AutoML'
-    forecastHorizon = 24
+    forecastHorizon = 100
     datasetGroupArn = event['ImportJob']['datasetGroupArn']
 
     create_predictor_response=forecast.create_predictor(PredictorName=predictorName, 
@@ -16,12 +16,12 @@ def lambda_handler(event, context):
                                                   PerformAutoML= True,
                                                   PerformHPO=False,
                                                   EvaluationParameters= {"NumberOfBacktestWindows": 1, 
-                                                                         "BackTestWindowOffset": 24}, 
+                                                                         "BackTestWindowOffset": 100}, 
                                                   InputDataConfig= {"DatasetGroupArn": datasetGroupArn},
                                                   FeaturizationConfig= {"ForecastFrequency": "H", 
                                                                         "Featurizations": 
                                                                         [
-                                                                          {"AttributeName": "target_value", 
+                                                                          {"AttributeName": "demand", 
                                                                            "FeaturizationPipeline": 
                                                                             [
                                                                               {"FeaturizationMethodName": "filling", 
