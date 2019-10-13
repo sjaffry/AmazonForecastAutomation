@@ -1,5 +1,0 @@
-{
-  "importJobArnOrders": "arn:aws:forecast:us-west-2:650222655237:dataset-import-job/inventory_forecast9_12_10_19_ds/INVENTORY_DSIMPORT_JOB_TARGET",
-  "importJobArnProducts": "arn:aws:forecast:us-west-2:650222655237:dataset-import-job/inventory_forecast9_12_10_19_ds_2/INVENTORY_DSIMPORT_JOB_METADATA",
-  "datasetGroupArn": "arn:aws:forecast:us-west-2:650222655237:dataset-group/inventory_forecast9_12_10_19_dsg"
-}
