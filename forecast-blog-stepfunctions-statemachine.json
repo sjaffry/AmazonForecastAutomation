@@ -153,8 +153,42 @@
               "Type": "Task",
               "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-export-forecast",
               "ResultPath": "$.ForecastExportArn",
-              "Next": "Succeed"
-            },        
+              "Next": "wait_for_export"
+            },
+            "wait_for_export": {
+              "Type": "Wait",
+              "Seconds": 20,
+              "Next": "GetExportStatus"
+          },
+            "GetExportStatus": {
+              "Type": "Task",
+              "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-check-export-status",
+              "ResultPath": "$.CheckStatus",
+              "Next": "Loop - Export Check"
+          },
+             "Loop - Export Check": {
+               "Type": "Choice",
+                 "Choices": [
+                  {
+                    "Not": {
+                      "Variable": "$.CheckStatus",
+                      "StringEquals": "ACTIVE"
+                    },
+                    "Next": "wait_for_export"
+                  },
+                  {
+                    "Variable": "$.CheckStatus",
+                    "StringEquals": "CREATE_FAILED",
+                    "Next": "Fail"
+                  }
+                ],
+                "Default": "RunCrawler"
+              },
+          "RunCrawler": {
+            "Type": "Task",
+            "Resource": "arn:aws:lambda:us-west-2:650222655237:function:forecast-blog-start-crawler",
+            "Next": "Succeed"
+          },                     
     "Succeed": {
       "Type": "Succeed"
       },
