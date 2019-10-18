@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     dt = datetime.datetime.now()
     project = 'inventory_forecast_' + dt.strftime('%d_%m_%y')
     predictorName= project + '_AutoML'
-    forecastHorizon = 144
+    forecastHorizon = 2
     datasetGroupArn = event['ImportJob']['datasetGroupArn']
 
     create_predictor_response=forecast.create_predictor(PredictorName=predictorName, 
@@ -18,7 +18,7 @@ def lambda_handler(event, context):
                                                   PerformAutoML= True,
                                                   PerformHPO=False,
                                                   EvaluationParameters= {"NumberOfBacktestWindows": 1, 
-                                                                         "BackTestWindowOffset": 144}, 
+                                                                         "BackTestWindowOffset": 2}, 
                                                   InputDataConfig= {"DatasetGroupArn": datasetGroupArn},
                                                   FeaturizationConfig= {"ForecastFrequency": "15min", 
                                                                         "Featurizations": 

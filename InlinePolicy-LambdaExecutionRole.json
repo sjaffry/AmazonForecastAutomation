@@ -13,7 +13,10 @@
                 "glue:GetJob",
                 "glue:StartTrigger",
                 "glue:CreateCrawler",
-                "glue:GetJobRun"
+                "glue:GetJobRun",
+                "glue:GetWorkflow",
+                "glue:PutWorkflowRunProperties",
+                "glue:GetWorkflowRunProperties"
             ],
             "Resource": "*",
             "Effect": "Allow",
