@@ -30,6 +30,21 @@
             "Resource": "*"
         },
         {
+            "Effect": "Allow",
+            "Action": [
+                "iam:GetRole"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "sns:ListTopics",
+                "sns:Publish"
+            ],
+            "Resource": "*"
+        },
+        {
             "Action": [
                 "iam:PassRole"
             ],

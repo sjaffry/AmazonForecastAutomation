@@ -14,13 +14,14 @@ workflow_params = workflow['Workflow']['LastRun']['WorkflowRunProperties']
 workflowRunId = workflow['Workflow']['LastRun']['WorkflowRunId']
 project = 'inventory_forecast'
 forecastName= project + '_AutoML_forecast'
-predictorArn = workflow_params['PredictorArn']
+predictorArn = workflow_params['predictorArn']
     
 create_forecast_response=forecast.create_forecast(ForecastName=forecastName,
                                                   PredictorArn=predictorArn)
 forecastArn = create_forecast_response['ForecastArn']
 
 workflow_params['forecastArn'] = forecastArn
+workflow_params['forecastName'] = forecastName
 glue_client.put_workflow_run_properties(Name=workflowName, RunId=workflowRunId, RunProperties=workflow_params)
 workflow_params = glue_client.get_workflow_run_properties(Name=workflowName,
                                         RunId=workflowRunId)["RunProperties"]
