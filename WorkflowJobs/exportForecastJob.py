@@ -15,10 +15,9 @@ workflow = glue_client.get_workflow(Name=workflowName)
 workflow_params = workflow['Workflow']['LastRun']['WorkflowRunProperties']
 workflowRunId = workflow['Workflow']['LastRun']['WorkflowRunId']
 forecastArn = workflow_params['forecastArn']
+forecastName = workflow_params['forecastName']
 dt = datetime.datetime.now()
 dateTime = dt.strftime('%d_%m_%y')
-project = 'inventory_forecast_' + dateTime
-forecastName = project + '_AutoML_forecast' 
 exportJobName = forecastName + dateTime + '_export'
 bucketName = 'forecast-blog-published'
 s3Path = 's3://' + bucketName + '/' + forecastName
