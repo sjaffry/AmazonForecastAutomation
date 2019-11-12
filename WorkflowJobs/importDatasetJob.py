@@ -24,7 +24,7 @@ datasetGroupName = project + '_dsg'
 bucket_name = 'forecast-blog-processed'
 orders_file = 'orders/orders-data.csv'
 products_file = 'products/product-data.csv'
-role_arn = 'arn:aws:iam::650222655237:role/service-role/AmazonForecast-ExecutionRole-1569298163518'
+role_arn = 'arn:aws:iam::999999999999:role/service-role/AmazonForecast-ExecutionRole-1569298163518'
 s3DataPathOrders = 's3://' + bucket_name + '/' + orders_file
 s3DataPathProducts = 's3://' + bucket_name + '/' + products_file
 
