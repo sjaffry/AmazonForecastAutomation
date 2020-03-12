@@ -1,4 +1,6 @@
 # Amazon Forecast Automation
+An end to end inventory forecasting demo using AWS Lake Formation for data lake and Amazon Forecast for generating AI driven inventory forecasts.
+
 AWS Glue jobs orchestrated via AWS Glue Workflow to automate the data import, training the predictor and generating forecast export from the Amazon Forecast service.
 
 This is the supporting code for the blog <b> "Building end to end automated inventory forecasting capability with AWS Lake Formation and Amazon Forecast" </b>.
