@@ -10,7 +10,7 @@ glue_client = session.client(service_name='glue')
 dt = datetime.datetime.now()
 project = 'inventory_forecast_' + dt.strftime('%d_%m_%y')
 predictorName= project + '_AutoML'
-forecastHorizon = 2
+forecastHorizon = 10
 workflowName = 'AmazonForecastWorkflow'
 workflow = glue_client.get_workflow(Name=workflowName)
 workflow_params = workflow['Workflow']['LastRun']['WorkflowRunProperties']
@@ -23,9 +23,12 @@ create_predictor_response=forecast.create_predictor(PredictorName=predictorName,
                                                 PerformAutoML= True,
                                                 PerformHPO=False,
                                                 EvaluationParameters= {"NumberOfBacktestWindows": 1, 
-                                                                        "BackTestWindowOffset": 2}, 
+                                                                        "BackTestWindowOffset": 10}, 
                                                 InputDataConfig= {"DatasetGroupArn": datasetGroupArn},
-                                                FeaturizationConfig= {"ForecastFrequency": "15min", 
+                                                FeaturizationConfig= {"ForecastFrequency": "D", 
+                                                                       'ForecastDimensions': [
+                                                                            'location'
+                                                                        ],
                                                                     "Featurizations": 
                                                                     [
                                                                         {"AttributeName": "demand", 

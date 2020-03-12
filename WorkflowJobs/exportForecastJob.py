@@ -19,10 +19,10 @@ forecastName = workflow_params['forecastName']
 dt = datetime.datetime.now()
 dateTime = dt.strftime('%d_%m_%y')
 exportJobName = forecastName + dateTime + '_export'
-bucketName = 'forecast-blog-published'
-s3Path = 's3://' + bucketName + '/' + forecastName
+bucketName = workflow_params['publishedBucket']
+s3Path = 's3://' + bucketName
 
-# Cleanout the older forecasts data from target bucket
+# Cleanout the older forecasts data from target bucket (for demo only. You may want to keep older forecasts in prod)
 bucket = s3.Bucket(bucketName)
 bucket.objects.all().delete()
 
@@ -44,5 +44,3 @@ workflow_params = glue_client.get_workflow_run_properties(Name=workflowName,
                                         RunId=workflowRunId)["RunProperties"]
 
 print('Forecast export Arn is: ' + workflow_params['forecastExportArn'])
-
-

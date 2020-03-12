@@ -13,18 +13,18 @@ workflow_params = workflow['Workflow']['LastRun']['WorkflowRunProperties']
 workflowRunId = workflow['Workflow']['LastRun']['WorkflowRunId']
 
 
-# In our dataset, the timeseries values are recorded every minute
-DATASET_FREQUENCY = "1min" 
+# In our dataset, the timeseries values are recorded every day
+DATASET_FREQUENCY = "D" 
 TIMESTAMP_FORMAT = "yyyy-MM-dd hh:mm:ss"
 
 dt = datetime.datetime.now()
 project = 'inventory_forecast_' + dt.strftime('%d_%m_%y') 
 datasetName = project + '_ds'
 datasetGroupName = project + '_dsg'
-bucket_name = 'forecast-blog-processed'
+bucket_name = workflow_params['processedBucket']
 orders_file = 'orders/orders-data.csv'
 products_file = 'products/product-data.csv'
-role_arn = 'arn:aws:iam::999999999999:role/service-role/AmazonForecast-ExecutionRole-1569298163518'
+role_arn = 'arn:aws:iam::123456789012:role/service-role/AmazonForecast-ExecutionRole-1569298163518'
 s3DataPathOrders = 's3://' + bucket_name + '/' + orders_file
 s3DataPathProducts = 's3://' + bucket_name + '/' + products_file
 
