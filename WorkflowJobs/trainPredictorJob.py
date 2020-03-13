@@ -18,9 +18,10 @@ workflowRunId = workflow['Workflow']['LastRun']['WorkflowRunId']
 datasetGroupArn = workflow_params['datasetGroupArn']
 
 
-create_predictor_response=forecast.create_predictor(PredictorName=predictorName, 
+create_predictor_response=forecast.create_predictor(PredictorName=predictorName,
+                                                AlgorithmArn='arn:aws:forecast:::algorithm/ETS',
                                                 ForecastHorizon=forecastHorizon,
-                                                PerformAutoML= True,
+                                                PerformAutoML= False,
                                                 PerformHPO=False,
                                                 EvaluationParameters= {"NumberOfBacktestWindows": 1, 
                                                                         "BackTestWindowOffset": 10}, 
