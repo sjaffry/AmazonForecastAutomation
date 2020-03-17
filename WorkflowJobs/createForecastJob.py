@@ -15,7 +15,7 @@ workflowRunId = workflow['Workflow']['LastRun']['WorkflowRunId']
 dt = datetime.datetime.now()
 dateTime = dt.strftime('%d_%m_%y')
 project = 'inventory_forecast'
-forecastName= project + '_AutoML_forecast_' + dateTime
+forecastName= project + '_ETS_forecast_' + dateTime
 predictorArn = workflow_params['predictorArn']
     
 create_forecast_response=forecast.create_forecast(ForecastName=forecastName,
