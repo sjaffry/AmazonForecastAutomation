@@ -37,7 +37,7 @@
             ],
             "Resource": [
                 "arn:aws:iam::*:role/AWSGlueServiceRole*",
-                "arn:aws:iam::[your aws account id]:role/AWS_GLUE_WORKFLOW_ROLE"
+                "arn:aws:iam::[your aws account id]:role/GLUE_WORKFLOW_ROLE"
             ],
             "Condition": {
                 "StringLike": {
@@ -53,7 +53,7 @@
                 "iam:PassRole",
                 "iam:GetRole"
             ],
-            "Resource": "arn:aws:iam::[your aws account id]:role/AWS_GLUE_WORKFLOW_ROLE",
+            "Resource": "arn:aws:iam::[your aws account id]:role/GLUE_WORKFLOW_ROLE",
             "Condition": {
                 "StringEquals": {
                     "iam:PassedToService": "forecast.amazonaws.com"

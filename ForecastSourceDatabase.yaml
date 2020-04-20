@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Cloudformation template to create Glue Workflow to automate forecast generation with Amazon Forecast
+Description: 'Cloudformation template to create a demo database with dummy data. It is made publically accessible (but restricted to whitelisted IPs) to be able to be inspected using locally installed tooling'
 Parameters:
   DBInstanceName:
     Description: Database instance name
@@ -8,8 +8,9 @@ Parameters:
     Description: Master user password
     Type: String
   IngressCIDR:
-    Description: Provide CIDR if you want external connection into db
+    Description: Provide CIDR to whitelist for external connection into db
     Type: String
+    AllowedPattern: ^([0-9]{1,3}\.){3}[0-9]{1,3}(\/([0-9]|[1-2][0-9]|3[0-2]))?$
 Resources:
   InternetGateway:
     Type: AWS::EC2::InternetGateway
@@ -124,7 +125,7 @@ Resources:
     Properties: 
       BackupRetentionPeriod: 0
       CACertificateIdentifier: 'rds-ca-2019'
-      DBInstanceClass: 'db.m4.large'
+      DBInstanceClass: 'db.t2.micro'
       DBInstanceIdentifier: !Ref DBInstanceName
       DBSnapshotIdentifier: 'arn:aws:rds:us-west-2:946827581022:snapshot:forecast-blog-db'
       DBSubnetGroupName: !Ref RDSSubnetGroup
